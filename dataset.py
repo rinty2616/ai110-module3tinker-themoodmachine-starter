@@ -1,17 +1,10 @@
 """
 Shared data for the Mood Machine lab.
 
-This file defines:
-  - POSITIVE_WORDS: starter list of positive words
-  - NEGATIVE_WORDS: starter list of negative words
-  - SAMPLE_POSTS: short example posts for evaluation and training
-  - TRUE_LABELS: human labels for each post in SAMPLE_POSTS
+Contains positive and negative words, example posts, and human labels.
 """
 
-# ---------------------------------------------------------------------
-# Starter word lists
-# ---------------------------------------------------------------------
-
+# Starter and additional positive words
 POSITIVE_WORDS = [
     "happy",
     "great",
@@ -23,8 +16,17 @@ POSITIVE_WORDS = [
     "chill",
     "relaxed",
     "amazing",
+    "hopeful",
+    "proud",
+    "wonderful",
+    "fantastic",
+    "enjoy",
+    "glad",
+    "best",
+    "nice",
 ]
 
+# Starter and additional negative words
 NEGATIVE_WORDS = [
     "sad",
     "bad",
@@ -36,13 +38,17 @@ NEGATIVE_WORDS = [
     "stressed",
     "hate",
     "boring",
+    "exhausted",
+    "disappointed",
+    "worst",
+    "annoying",
+    "failed",
+    "traffic",
+    "😭",
+    ":(",
 ]
 
-# ---------------------------------------------------------------------
-# Starter labeled dataset
-# ---------------------------------------------------------------------
-
-# Short example posts written as if they were social media updates or messages.
+# Example posts written like social media updates
 SAMPLE_POSTS = [
     "I love this class so much",
     "Today was a terrible day",
@@ -50,45 +56,35 @@ SAMPLE_POSTS = [
     "This is fine",
     "So excited for the weekend",
     "I am not happy about this",
+    "Lowkey stressed but kind of proud of myself",
+    "No cap, this is awesome!",
+    "I missed the bus again :(",
+    "I absolutely love getting stuck in traffic",
+    "Just got home at 6 pm",
+    "I'm fine, just exhausted",
+    "This movie was not bad",
+    "I failed the test 😂 but at least I studied hard",
 ]
 
-# Human labels for each post above.
-# Allowed labels in the starter:
-#   - "positive"
-#   - "negative"
-#   - "neutral"
-#   - "mixed"
+# Human-assigned labels for each post above
 TRUE_LABELS = [
-    "positive",  # "I love this class so much"
-    "negative",  # "Today was a terrible day"
-    "mixed",     # "Feeling tired but kind of hopeful"
-    "neutral",   # "This is fine"
-    "positive",  # "So excited for the weekend"
-    "negative",  # "I am not happy about this"
+    "positive",
+    "negative",
+    "mixed",
+    "neutral",
+    "positive",
+    "negative",
+    "mixed",
+    "positive",
+    "negative",
+    "negative",
+    "neutral",
+    "mixed",
+    "positive",
+    "mixed",
 ]
 
-# TODO: Add 5-10 more posts and labels.
-#
-# Requirements:
-#   - For every new post you add to SAMPLE_POSTS, you must add one
-#     matching label to TRUE_LABELS.
-#   - SAMPLE_POSTS and TRUE_LABELS must always have the same length.
-#   - Include a variety of language styles, such as:
-#       * Slang ("lowkey", "highkey", "no cap")
-#       * Emojis (":)", ":(", "🥲", "😂", "💀")
-#       * Sarcasm ("I absolutely love getting stuck in traffic")
-#       * Ambiguous or mixed feelings
-#
-# Tips:
-#   - Try to create some examples that are hard to label even for you.
-#   - Make a note of any examples that you and a friend might disagree on.
-#     Those "edge cases" are interesting to inspect for both the rule based
-#     and ML models.
-#
-# Example of how you might extend the lists:
-#
-# SAMPLE_POSTS.append("Lowkey stressed but kind of proud of myself")
-# TRUE_LABELS.append("mixed")
-#
-# Remember to keep them aligned:
-#   len(SAMPLE_POSTS) == len(TRUE_LABELS)
+# Keep the dataset and labels aligned
+assert len(SAMPLE_POSTS) == len(TRUE_LABELS), (
+    "SAMPLE_POSTS and TRUE_LABELS must have the same length!"
+)

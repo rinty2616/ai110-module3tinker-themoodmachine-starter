@@ -1,123 +1,48 @@
 # Model Card: Mood Machine
 
-This model card is for the Mood Machine project, which includes **two** versions of a mood classifier:
-
-1. A **rule based model** implemented in `mood_analyzer.py`
-2. A **machine learning model** implemented in `ml_experiments.py` using scikit learn
-
-You may complete this model card for whichever version you used, or compare both if you explored them.
-
 ## 1. Model Overview
 
-**Model type:**  
-Describe whether you used the rule based model, the ML model, or both.  
-Example: “I used the rule based model only” or “I compared both models.”
+**Model type:** I tested both the rule-based model and the machine-learning (ML) model.
 
-**Intended purpose:**  
-What is this model trying to do?  
-Example: classify short text messages as moods like positive, negative, neutral, or mixed.
+**Intended purpose:** The models classify short text messages into positive, negative, neutral, or mixed moods.
 
-**How it works (brief):**  
-For the rule based version, describe the scoring rules you created.  
-For the ML version, describe how training works at a high level (no math needed).
-
-
+**How it works (brief):** The rule-based model looks for positive and negative words, handles some negations, and recognizes common emojis. The ML model learns patterns from labeled example posts and uses those patterns to predict the mood of new messages.
 
 ## 2. Data
 
-**Dataset description:**  
-Summarize how many posts are in `SAMPLE_POSTS` and how you added new ones.
+**Dataset description:** My dataset contains 14 short posts in `SAMPLE_POSTS`, with corresponding labels in `TRUE_LABELS`. I expanded the word lists and included examples involving slang, emojis, negation, sarcasm, and mixed feelings.
 
-**Labeling process:**  
-Explain how you chose labels for your new examples.  
-Mention any posts that were hard to label or could have multiple valid labels.
+**Labeling process:** I assigned labels based on the overall meaning and mood of each message. Some examples were difficult to label because they contained both positive and negative feelings. For example, "Feeling tired but kind of hopeful" expresses mixed emotions. Sarcastic messages can also be difficult to label.
 
-**Important characteristics of your dataset:**  
-Examples you might include:  
+**Important characteristics of my dataset:**
+- Contains slang and emojis.
+- Includes negation, such as "I am not happy."
+- Includes sarcasm, such as "I absolutely love getting stuck in traffic."
+- Contains mixed emotions and ambiguous messages.
+- Includes neutral messages without clear emotional language.
 
-- Contains slang or emojis  
-- Includes sarcasm  
-- Some posts express mixed feelings  
-- Contains short or ambiguous messages
+**Possible issues with the dataset:** The dataset is small and may not represent the way different people express emotions. Some labels are subjective, and the models may learn patterns that do not work well on unfamiliar messages.
 
-**Possible issues with the dataset:**  
-Think about imbalance, ambiguity, or missing kinds of language.
+## 3. How the Rule-Based Model Works
 
-## 3. How the Rule Based Model Works (if used)
+**My scoring rules:** I expanded the positive and negative word lists. Positive words increase the score, while negative words decrease it. I added preprocessing to handle punctuation, repeated letters, and common emojis. I also added simple negation handling for phrases such as "not happy" and "not bad." The model predicts a mood based on the sentiment score and the positive and negative signals it detects.
 
-**Your scoring rules:**  
-Describe the modeling choices you made.  
-Examples:  
+**Strengths of this approach:** The rules are easy to understand, and the model works well for straightforward messages such as "I love my class" and "I am not happy." Its predictions can be explained by identifying the words and emojis that influenced them.
 
-- How positive and negative words affect score  
-- Negation rules you added  
-- Weighted words  
-- Emoji handling  
-- Threshold decisions for labels
+**Weaknesses of this approach:** The model can struggle with sarcasm, unfamiliar slang, and complex sentences. For example, "I absolutely love getting stuck in traffic" was predicted as mixed because the model detected both positive and negative words without fully understanding the sarcasm.
 
-**Strengths of this approach:**  
-Where does it behave predictably or reasonably well?
+## 4. How the ML Model Works
 
-**Weaknesses of this approach:**  
-Where does it fail?  
-Examples: sarcasm, subtlety, mixed moods, unfamiliar slang.
+**Features used:** The ML model uses text features created by the scikit-learn pipeline in `ml_experiments.py`. These features allow the model to learn patterns from the training messages. The exact feature representation depends on the implementation in the project code.
 
-## 4. How the ML Model Works (if used)
+**Training data:** The model was trained using `SAMPLE_POSTS` and their corresponding `TRUE_LABELS` from `dataset.py`.
 
-**Features used:**  
-Describe the representation.  
-Example: “Bag of words using CountVectorizer.”
+**Training behavior:** The ML model reported an accuracy of 1.00 on the dataset, while the rule-based model reported an accuracy of 0.86. I also tested new sentences interactively. The ML model predicted "I don't know" as negative, while the rule-based model predicted it as neutral.
 
-**Training data:**  
-State that the model trained on `SAMPLE_POSTS` and `TRUE_LABELS`.
-
-**Training behavior:**  
-Did you observe changes in accuracy when you added more examples or changed labels?
-
-**Strengths and weaknesses:**  
-Strengths might include learning patterns automatically.  
-Weaknesses might include overfitting to the training data or picking up spurious cues.
+**Strengths and weaknesses:** The ML model can learn patterns automatically from labeled examples. However, its high accuracy on this small dataset does not guarantee good predictions on new messages. It may learn misleading patterns or fail to understand context that is not represented in its training data.
 
 ## 5. Evaluation
 
-**How you evaluated the model:**  
-Both versions can be evaluated on the labeled posts in `dataset.py`.  
-Describe what accuracy you observed.
+**How I evaluated the models:** I ran `python main.py` to evaluate the rule-based model and `python ml_experiments.py` to evaluate the ML model. The rule-based model reported an accuracy of 0.86, and the ML model reported an accuracy of 1.00 on the dataset. I also tested both models with the same three interactive messages.
 
-**Examples of correct predictions:**  
-Provide 2 or 3 examples and explain why they were correct.
-
-**Examples of incorrect predictions:**  
-Provide 2 or 3 examples and explain why the model made a mistake.  
-If you used both models, show how their failures differed.
-
-## 6. Limitations
-
-Describe the most important limitations.  
-Examples:  
-
-- The dataset is small  
-- The model does not generalize to longer posts  
-- It cannot detect sarcasm reliably  
-- It depends heavily on the words you chose or labeled
-
-## 7. Ethical Considerations
-
-Discuss any potential impacts of using mood detection in real applications.  
-Examples: 
-
-- Misclassifying a message expressing distress  
-- Misinterpreting mood for certain language communities  
-- Privacy considerations if analyzing personal messages
-
-## 8. Ideas for Improvement
-
-List ways to improve either model.  
-Possible directions:  
-
-- Add more labeled data  
-- Use TF IDF instead of CountVectorizer  
-- Add better preprocessing for emojis or slang  
-- Use a small neural network or transformer model  
-- Improve the rule based scoring method  
-- Add a real test set instead of training accuracy only
+**Examples of
