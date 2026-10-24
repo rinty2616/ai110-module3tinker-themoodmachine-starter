@@ -2,53 +2,34 @@
 
 ## Project Summary
 
-I built a simple music recommendation system using Python. The program recommends songs based on a user's favorite genre, mood, and preferred energy level.
-
-My system reads 15 songs from a CSV file, calculates a score for each song, and recommends the top 5 songs.
-
-I also tested different user profiles and experimented with changing the scoring weights to understand how recommendations work.
+I built a simple music recommendation system in Python. It compares songs with a user's favorite genre, favorite mood, and preferred energy level. The program scores all 15 songs in a CSV file, recommends the top five, and explains why each song was selected. I tested different user profiles to see how recommendations changed and experimented with the scoring weights.
 
 ## How The System Works
 
-My music recommendation system compares each song with the user's music preferences.
+The system uses **content-based filtering**: it compares a user's stated preferences with song features, rather than using the listening habits of other users. Each song has information including genre, mood, energy, tempo, valence, danceability, and acousticness. This version scores songs using three features:
 
-The scoring rules are:
+- **Genre match:** +2.0 points
+- **Mood match:** +1.0 point
+- **Energy similarity:** up to +1.0 point, calculated from how close a song's energy is to the preferred energy
 
-- Genre match: 2 points
-- Mood match: 1 point
-- Energy similarity: up to 1 point
-
-The maximum score is 4 points.
-
-The program calculates scores for all 15 songs and recommends the top 5 songs with the highest scores.
-
-The main features used are genre, mood, and energy.
-
-One limitation is that the system may favor certain genres and miss other songs the user might enjoy.
+The highest possible score is 4.0. The program loads the catalog, scores each song, sorts the results from highest to lowest, and displays the top five with explanations. It may over-favor genre because genre has the largest weight.
 
 ## Getting Started
 
-### Setup
-
-1. Create a virtual environment:
+From the project folder, create and activate a virtual environment on a Mac:
 
 ```bash
 python3 -m venv .venv
-```
-
-2. Activate it on Mac:
-
-```bash
 source .venv/bin/activate
 ```
 
-3. Install dependencies:
+Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run the music recommender:
+Run the program:
 
 ```bash
 python -m src.main
@@ -56,17 +37,15 @@ python -m src.main
 
 ### Running Tests
 
-Run the tests using:
-
 ```bash
 python -m pytest -v
 ```
 
-I ran the tests successfully. Both automated tests passed.
+When I tested the project, both automated tests passed.
 
 ## Sample Recommendation Output
 
-The following results were generated using a Pop / Happy user profile with target energy 0.8.
+For a user who likes pop, happy music, and energy level 0.8, my program produced:
 
 ```text
 Top recommendations:
@@ -89,9 +68,9 @@ Because: Energy similarity (+0.95)
 
 ## Evaluation: Three Music Profiles
 
-I tested three different user profiles to see whether my system produces different recommendations.
+I tested three sets of preferences and compared their top five results.
 
-### Profile 1: High-Energy Pop
+### High-Energy Pop
 
 ```text
 Sunrise City - Score: 3.92
@@ -110,7 +89,7 @@ Storm Runner - Score: 0.99
 Because: Energy similarity (+0.99)
 ```
 
-### Profile 2: Chill Lofi
+### Chill Lofi
 
 ```text
 Library Rain - Score: 3.95
@@ -129,7 +108,7 @@ Coffee Shop Stories - Score: 0.93
 Because: Energy similarity (+0.93)
 ```
 
-### Profile 3: Intense Rock
+### Intense Rock
 
 ```text
 Storm Runner - Score: 3.96
@@ -148,64 +127,28 @@ Rooftop Lights - Score: 0.81
 Because: Energy similarity (+0.81)
 ```
 
-### Evaluation Findings
-
-The three profiles produced different recommendations.
-
-High-Energy Pop preferred Sunrise City, while Chill Lofi preferred Library Rain.
-
-Intense Rock recommended Storm Runner first because it closely matched rock music, an intense mood, and high energy.
-
-This showed that the algorithm responds to different user preferences.
+The results changed with the user preferences. High-Energy Pop ranked **Sunrise City** first, Chill Lofi ranked **Library Rain** first, and Intense Rock ranked **Storm Runner** first. High-Energy Pop and Intense Rock both prefer strong energy, but their different genres and moods led to different top recommendations. Chill Lofi favored gentler songs instead.
 
 ## Experiments You Tried
 
-I experimented with changing the importance of genre and energy.
+I changed the scoring weights to see what would happen when energy mattered more than genre:
 
-Original weights:
+| Feature | Original weight | Experimental weight |
+| --- | ---: | ---: |
+| Genre match | 2.0 | 1.0 |
+| Mood match | 1.0 | 1.0 |
+| Energy similarity | Up to 1.0 | Up to 2.0 |
 
-- Genre: 2 points
-- Mood: 1 point
-- Energy: up to 1 point
-
-Experimental weights:
-
-- Genre: 1 point
-- Mood: 1 point
-- Energy: up to 2 points
-
-After making these changes, the scores changed.
-
-For the Intense Rock profile, Storm Runner changed from 3.96 to 3.92 points.
-
-Gym Hero increased from 1.98 to 2.96 points.
-
-For the Chill Lofi profile, Spacewalk Thoughts moved above Focus Flow because energy similarity became more important.
-
-I learned that changing scoring weights can change the ranking and influence which songs are recommended.
-
-After completing the experiment, I restored the original weights.
+For the **Intense Rock** profile, Storm Runner changed from **3.96** to **3.92**, Gym Hero from **1.98** to **2.96**, and Electric Dreams from **1.00** to **2.00**. The top three songs stayed in the same order, but the scores changed. For **Chill Lofi**, Spacewalk Thoughts moved above Focus Flow when energy became more important. This showed that changing feature weights can change rankings. I restored the original weights after the experiment.
 
 ## Limitations and Risks
 
-My recommendation system has some limitations.
-
-1. The dataset contains only 15 songs, which limits music diversity.
-2. Some genres have fewer songs than others.
-3. The algorithm gives more importance to genre than mood.
-4. It does not consider the user's listening history, likes, or skips.
-5. The system may create a filter bubble by recommending similar music repeatedly.
-
-A larger dataset and more user information could improve the recommendations.
+The catalog has only 15 songs, so it cannot represent every genre or listening preference. Some genres have fewer songs than others. Because genre is worth more than mood, the system may create a **filter bubble** and overlook songs from other genres that a listener might enjoy. It does not use user listening history, likes, skips, lyrics, or all the available numerical song features. A larger, more balanced catalog and more user feedback could make the recommendations better.
 
 ## Reflection
 
-During this project, I learned how a music recommendation system turns song data and user preferences into predictions. I learned how to load CSV data, calculate scores, rank songs, and display recommendations using Python.
+I learned how recommender systems turn data and preferences into scores and ranked suggestions. I practiced reading a CSV file, writing Python functions, explaining scores, and testing results. AI tools helped me understand code and troubleshoot errors, but I ran the program and checked the recommendations myself.
 
-AI tools helped me understand the code and fix programming errors. I also tested the program myself to confirm that it worked correctly.
+What surprised me most was how changing a few scoring weights affected the results. I now understand better how music apps can influence what listeners discover, and why recommendation systems should consider bias and diversity. If I improved this project, I would add more songs and use feedback such as likes and skips.
 
-One interesting thing I discovered was that changing just a few scoring weights could change the recommendations. This helped me understand how simple algorithms can affect what users see on real music platforms.
-
-In the future, I would like to add more songs, include user listening history, and improve the recommendation system.
-
-For more information about my project, see my [Model Card](model_card.md).
+Read the full [Model Card](model_card.md) for more details about the system, its evaluation, and its limitations.
